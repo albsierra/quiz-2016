@@ -20,11 +20,17 @@ sequelize.sync().then(function() {
 		if (count === 0) { //la tabla se inicializa solo si está vacia
 			Quiz.create({
 					pregunta: 'Capital de Italia',
-					respuesta: 'Roma'
+					respuesta: 'Roma',
+					aciertos: 0
 				})
 				.then(function() {
 					console.log('Base de datos inicializada')
 				});
-		};
+		} else {
+			Quiz.findAll().then(function(quiz) {
+				quiz[0].aciertos = 0;
+				quiz[0].save({fields: ['aciertos']});
+			});
+		}
 	});
 });

@@ -11,9 +11,16 @@ exports.question = function(req, res) {
 exports.answer = function(req, res) {
 	models.Quiz.findAll().then(function(quiz){
 		if (req.query.respuesta === quiz[0].respuesta) {
-			res.render('quizes/answer', {respuesta: 'Correcto'});
+			quiz[0].aciertos = quiz[0].aciertos + 1;
+			quiz[0].save({fields: ['aciertos']}).then(function(quiz){
+				res.render('quizes/answer', {respuesta: 'Correcto'});
+			})
 		} else {
-			res.render('quizes/answer', {respuesta: 'Incorrecto'});
+			aciertos = quiz[0].aciertos;
+			quiz[0].aciertos = 0;
+			quiz[0].save({fields: ['aciertos']}).then(function(quiz){
+				res.render('quizes/fallo', {aciertos: aciertos});
+			})
 		}
 	})
 };
