@@ -40,7 +40,6 @@ exports.answer = function(req, res) {
 // GET /quizes/new
 exports.new = function(req,res) {
 	var quiz = models.Quiz.build( //crea objeto quiz
-		{pregunta: "Pregunta", respuesta: "Respuesta"}
 	);
 
 	res.render('quizes/new', {quiz: quiz, errors: [] });
