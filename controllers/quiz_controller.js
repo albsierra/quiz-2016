@@ -25,7 +25,9 @@ exports.index = function(req, res) {
 
 // GET /quizes/:quizId(\\d+)
 exports.show = function(req, res) {
-	res.render('quizes/show', {quiz: req.quiz});
+	req.quiz.getComments().then(function(comments){
+		res.render('quizes/show', {quiz: req.quiz, comments: comments});
+	});
 };
 
 // GET /quizes/:quizId(\\d+)/answer

@@ -4,3 +4,10 @@
 			<input type="text" name="respuesta" value="Responda aquí">
 			<input type="submit" value="Enviar">
 		</form>
+		<p><a href="/quizes/<%= quiz.id %>/comments/new"><button>Nuevo comentario</button></a></p>
+		<p><strong>Comentarios:</strong></p>
+		<% for(var i=0; i < comments.length ; i++) { %>
+			<ul>
+				<li><%- comments[i].texto %></li>
+			</ul>
+		<% } %>
