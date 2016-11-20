@@ -1,5 +1,20 @@
 var models = require('../models/models.js');
 
+// Autoload :commentId de comentarios
+exports.load = function(req, res, next, commentId) {
+	models.Comment.findById(commentId).then(
+		function(comment){
+			if (comment) {
+				req.comment = comment;
+				next();
+			} else {
+				var err = new Error('No existe el comentario con Id: ' + commentId);
+  				err.status = 404;
+				next(err);
+			}	
+		}). catch(function(error){next(error)});
+};
+
 // GET /quizes/:quizId(\\d+)/comments/new
 exports.new = function(req, res, next) {
 	var comment = models.Comment.build( //crea objeto comment
@@ -26,4 +41,16 @@ exports.create = function(req, res, next) {
 		}
 	}
   ).catch(function(error){next(error)});
+};
+
+exports.publish = function(req, res) {
+	req.comment.publicado = true;
+
+	req.comment.save( {fields: ["publicado"]})
+	.then(function(){
+		res.redirect('/quizes/'+req.params.quizId);
+	})
+	.catch(function(error){
+		next(error)
+	});
 };

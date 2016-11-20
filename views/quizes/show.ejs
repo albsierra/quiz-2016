@@ -7,7 +7,16 @@
 		<p><a href="/quizes/<%= quiz.id %>/comments/new"><button>Nuevo comentario</button></a></p>
 		<p><strong>Comentarios:</strong></p>
 		<% for(var i=0; i < comments.length ; i++) { %>
+		  <% if(comments[i].publicado || session.user) { %>
 			<ul>
-				<li><%- comments[i].texto %></li>
+				<li>
+					<%- comments[i].texto %>
+					<% if(session.user && !comments[i].publicado) { %>
+						<form class="right" method="post" action="/quizes/<%= quiz.id %>/comments/<%= comments[i].id %>/publish?_method=put">
+							<button type="submit">Publicar</button>
+						</form>
+					<% } %>
+				</li>
 			</ul>
+		  <% } %>
 		<% } %>
