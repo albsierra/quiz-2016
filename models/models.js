@@ -12,11 +12,13 @@ var sequelize = new Sequelize(null, null, null, {
 //Importar la definicion de la tabla Quiz en quiz.js
 var Quiz = sequelize.import(path.join(__dirname, 'quiz'));
 var Comment = sequelize.import(path.join(__dirname, 'comment'));
+var User = sequelize.import(path.join(__dirname, 'user'));
 
 Quiz.hasMany(Comment, {as: 'Comments'});
 
 exports.Quiz = Quiz; // exporta la definicion de la tabla Quiz
 exports.Comment = Comment; // exporta la definicion de la tabla Quiz
+exports.User = User; // exporta la definicion de la tabla Quiz
 
 //sequelize.sync() crea e inicializa la tabla de preguntas en DB
 sequelize.sync().then(function() {
@@ -30,6 +32,14 @@ sequelize.sync().then(function() {
 			Quiz.create({
 					pregunta: 'Capital de <strong>Portugal</strong>',
 					respuesta: 'Lisboa'
+				});
+			User.create({
+					username: 'admin',
+					password: '1234'
+				});
+			User.create({
+					username: 'pepe',
+					password: '5678'
 				})
 				.then(function() {
 					console.log('Base de datos inicializada')
